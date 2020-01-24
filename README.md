@@ -30,12 +30,12 @@ In the given file kube-flannel.yml, i have changed the interface details so that
 3) Suppose all machines has been installed & now its time to verify all the machines one by one.
   ``` vagrant status ```
   ``` vagrant ssh kmaster ```
-          kubectl version
-          kubeadm version
-          systemctl status kubelet
-          cat /etc/hosts | grep -i example
-          systemctl status docker
-          docker ps         
+          ``` kubectl version ```
+          ``` kubeadm version ```
+          ``` systemctl status kubelet ```
+          ``` cat /etc/hosts | grep -i example ```
+          ``` systemctl status docker ```
+          ``` docker ps ```
            ``` CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES ```
            ``` d4e43a3a4483        70f311871ae1           "/coredns -conf /etc…"   35 minutes ago      Up 35 minutes                           k8s_coredns_coredns-6955765f44-cztfs_kube-system_1e935d55-03ae-47e7-a870-5151cfbdc537_0 ```
            ``` a7b66162a9f6        70f311871ae1           "/coredns -conf /etc…"   35 minutes ago      Up 35 minutes                           k8s_coredns_coredns-6955765f44-n75rf_kube-system_ef01f295-9d05-4f84-bb38-04fdafe814d0_0 ```
