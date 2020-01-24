@@ -47,8 +47,13 @@ echo "[Task 8] Disable the swap memory"
 sed -i '/swap/d' /etc/fstab
 swapoff -a
 
+# Enable the ssh Authentication
+echo "[Task 9] Enable the ssh Authentication"
+sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+systemctl reload sshd
+
 # Install the kubeadm, kubelet and kubectl into the machine.
-echo "[Task 9] Install the kubernetes components and enable the Repo"
+echo "[Task 10] Install the kubernetes components and enable the Repo"
 cat >>/etc/yum.repos.d/kubernetes.repo<<EOF
 [kubernetes]
 name=Kubernetes
@@ -58,14 +63,15 @@ gpgcheck=1
 repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg 
 		https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
 EOF
 
 # Install the kubernetes
-echo "[Task 10] Install and enable the kubelet service"
+echo "[Task 11] Install and enable the kubelet service"
 yum install -y kubelet kubeadm kubectl &>2
 
 # Enable and start the kubelet
-echo "[Task 11] Enable the k8s service"
+echo "[Task 12] Enable the k8s service"
 systemctl enable kubelet &>2
 systemctl start kubelet &>2
 
@@ -74,7 +80,7 @@ echo "[Task 13] Provide the exact permission to vagrant user"
 usermod -G vagrant,docker vagrant
 
 # Lets Create the bashrc environment for vagrant user.
-echo "[Task 13] Enable the Aliases"
+echo "[Task 14] Enable the Aliases"
 cat >> /home/vagrant/.bashrc<<EOF
 alias kga='kubectl get all'
 alias kgn='kubectl get nodes -o wide'
@@ -82,8 +88,6 @@ alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
 alias kgs='kubectl get services'
 alias k='kubectl'
-alias ii='ifconfig eth0'
-alias iii='ifconfig eth1'
 source <(kubectl completion bash)
 export TERM=xterm
 EOF
