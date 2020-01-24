@@ -58,7 +58,6 @@ gpgcheck=1
 repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg 
 		https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-
 EOF
 
 # Install the kubernetes
@@ -83,6 +82,8 @@ alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
 alias kgs='kubectl get services'
 alias k='kubectl'
+alias ii='ifconfig eth0'
+alias iii='ifconfig eth1'
 source <(kubectl completion bash)
 export TERM=xterm
 EOF
