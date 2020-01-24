@@ -30,7 +30,7 @@ In the given file kube-flannel.yml, i have changed the interface details so that
 3) Suppose all machines has been installed & now its time to verify all the machines one by one.
   ``` vagrant status ```
   ``` vagrant ssh kmaster ```
-      ``` kubectl version
+          kubectl version
           kubeadm version
           systemctl status kubelet
           cat /etc/hosts | grep -i example
