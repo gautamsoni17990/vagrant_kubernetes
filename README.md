@@ -1,4 +1,4 @@
-## vagrant_kubernetes
+## Vagrant_kubernetes
 With this repository, we can install kubernetes cluster via vagrant application, we just need to install below mentioned software before running evrything.
 * vagrant for windows 10
 * Latest oracle virtual box
@@ -12,11 +12,23 @@ Download the virtual box from below given link.
 https://www.virtualbox.org
 
 ## Discuss the attached file now.
-we have vagrantfile and which is used to install the multiple machines in virtual box with the help of vagrant.
-> we can use shell script as well during the installation of machine so that we can automate everything.
-> We have used 1 script which is ``` bootstrap.sh ```which is used to install all required packages and prerequisites.
-> ``` bootstrap_kmaster.sh ``` is used to install the kubeadm in master node only anf fetch the multiple details accordingly.
-> ``` bootstrap_kworker.sh ``` is used to join the k8s cluster with worker node.
+```
+Vagrantfile
+which is used to install the multiple machines in virtual box with the help of vagrant.
+```
+we can use shell script as well during the installation of machine so that we can automate everything.
+```
+bootstrap.sh
+This is used to install all required packages and prerequisites.
+```
+``` 
+bootstrap_kmaster.sh 
+This is used to install the kubeadm in master node only anf fetch the multiple details accordingly.
+``` 
+``` 
+bootstrap_kworker.sh
+This is used to join the k8s cluster with worker node.
+```
 
 ## Note: 
 In the given file kube-flannel.yml, i have changed the interface details so that we can install the pod flannel network on eth1 interface becasue eth0 is reserved for NAT and also used by vagrant file as well.
@@ -32,7 +44,7 @@ In the given file kube-flannel.yml, i have changed the interface details so that
     
 3) Suppose all machines has been installed & now its time to verify all the machines one by one.
 ```
-vagrant status
+C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine>vagrant status
 Current machine states:
 
 kmaster                   running (virtualbox)
@@ -42,6 +54,8 @@ kworker2                  running (virtualbox)
 This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 VM, run `vagrant status NAME`.
+
+C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine>
 ```
 ```
 C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine>vagrant ssh kmaster
@@ -118,6 +132,94 @@ b4b660c5ba42        k8s.gcr.io/pause:3.1   "/pause"                 About an hou
 3044e0fe82b5        k8s.gcr.io/pause:3.1   "/pause"                 About an hour ago   Up About an hour                        k8s_POD_kube-apiserver-kmaster.example.com_kube-system_1a7637ce0ca8e47b97c6d0472744d1a1_0
 [vagrant@kmaster ~]$
 ```  
-   
+
+```
+[vagrant@kmaster ~]$ kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   11m
+[vagrant@kmaster ~]$
+```
+```
+[vagrant@kmaster ~]$ kubectl get nodes -o wide
+NAME                   STATUS   ROLES    AGE     VERSION   INTERNAL-IP      EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION               CONTAINER-RUNTIME
+kmaster.example.com    Ready    master   10m     v1.17.2   172.28.128.100   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.5
+kworker1.example.com   Ready    <none>   5m50s   v1.17.2   172.28.128.101   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.5
+kworker2.example.com   Ready    <none>   91s     v1.17.2   172.28.128.102   <none>        CentOS Linux 7 (Core)   3.10.0-957.12.2.el7.x86_64   docker://19.3.5
+[vagrant@kmaster ~]$
+```
+4) Now, we will check all the aliases which are configured during the installation with below given command.
+```
+[vagrant@kmaster ~]$ alias
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias k='kubectl'
+alias kga='kubectl get all'
+alias kgd='kubectl get deployments'
+alias kgn='kubectl get nodes -o wide'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get services'
+alias l.='ls -d .* --color=auto'
+alias ll='ls -l --color=auto'
+alias ls='ls --color=auto'
+alias vi='vim'
+alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+[vagrant@kmaster ~]$
+```
+
+5) Let configure one deployment and then we will check the connectivity.
+```
+[vagrant@kmaster ~]$ kubectl run webserver --image=nginx:alpine --port=80
+kubectl run --generator=deployment/apps.v1 is DEPRECATED and will be removed in a future version. Use kubectl run --generator=run-pod/v1 or kubectl create instead.
+deployment.apps/webserver created
+[vagrant@kmaster ~]$ kga
+NAME                             READY   STATUS    RESTARTS   AGE
+pod/webserver-5bff76c8f7-p9k84   1/1     Running   0          47s
+
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   69m
+
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/webserver   1/1     1            1           47s
+
+NAME                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/webserver-5bff76c8f7   1         1         1       47s
+[vagrant@kmaster ~]$
+[vagrant@kmaster ~]$ kgp -o wide
+NAME                         READY   STATUS    RESTARTS   AGE   IP           NODE                   NOMINATED NODE   READINESS GATES
+webserver-5bff76c8f7-p9k84   1/1     Running   0          69s   10.244.1.3   kworker1.example.com   <none>           <none>
+[vagrant@kmaster ~]$
+```
+
+6) Lets check if we can access the container or not.
+```
+[vagrant@kmaster ~]$ curl 10.244.1.3
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+[vagrant@kmaster ~]$
+```
 
 ## Best of luck for the installation of kubernetes clusters via kubeadm. ###
