@@ -35,7 +35,9 @@ In the given file kube-flannel.yml, i have changed the interface details so that
           systemctl status kubelet
           cat /etc/hosts | grep -i example
           systemctl status docker
-          docker ps
+          ``` 
+          ``` docker ps
+          
 CONTAINER ID        IMAGE                  COMMAND                  CREATED             STATUS              PORTS               NAMES
 d4e43a3a4483        70f311871ae1           "/coredns -conf /etc…"   35 minutes ago      Up 35 minutes                           k8s_coredns_coredns-6955765f44-cztfs_kube-system_1e935d55-03ae-47e7-a870-5151cfbdc537_0
 a7b66162a9f6        70f311871ae1           "/coredns -conf /etc…"   35 minutes ago      Up 35 minutes                           k8s_coredns_coredns-6955765f44-n75rf_kube-system_ef01f295-9d05-4f84-bb38-04fdafe814d0_0
@@ -52,6 +54,7 @@ e7c30d55f179        da5fd66c4068           "kube-controller-man…"   36 minutes
 a4232757148b        k8s.gcr.io/pause:3.1   "/pause"                 36 minutes ago      Up 36 minutes                           k8s_POD_kube-controller-manager-kmaster.example.com_kube-system_39a083bd62fc59c85a03ab44e7d64515_0
 b4b660c5ba42        k8s.gcr.io/pause:3.1   "/pause"                 36 minutes ago      Up 36 minutes                           k8s_POD_etcd-kmaster.example.com_kube-system_1de69429fc63a45ab591cf8822fa476a_0
 106e1f64f4c3        k8s.gcr.io/pause:3.1   "/pause"                 36 minutes ago      Up 36 minutes                           k8s_POD_kube-scheduler-kmaster.example.com_kube-system_9c994ea62a2d8d6f1bb7498f10aa6fcf_0
-3044e0fe82b5        k8s.gcr.io/pause:3.1   "/pause"                 36 minutes ago      Up 36 minutes                           k8s_POD_kube-apiserver-kmaster.example.com_kube-system_1a7637ce0ca8e47b97c6d0472744d1a1_0 ```
+3044e0fe82b5        k8s.gcr.io/pause:3.1   "/pause"                 36 minutes ago      Up 36 minutes                           k8s_POD_kube-apiserver-kmaster.example.com_kube-system_1a7637ce0ca8e47b97c6d0472744d1a1_0
+    ```
 
 ## Best of luck for the installation of kubernetes clusters via kubeadm. ###
