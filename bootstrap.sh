@@ -14,8 +14,17 @@ sudo systemctl stop firewalld
 
 # Install the new package ebtables
 echo "[Task 3] Install required packages"
-sudo yum -y install wget telnet elinks net-tools ebtables vim lvm2 device-mapper-persistent-data dnf* &>2
+sudo yum -y install wget telnet elinks net-tools ebtables vim lvm2 device-mapper-persistent-data dnf* ntp &>2
 
+# Enable the ntp server and all settings
+echo "[Task 3.1] enable and start the service"
+sudo systemctl enable ntpd
+sudo systemctl start ntpd
+
+# Synchronize the ntp configuration
+echo "[Task 3.2] Sync the NTP config"
+sudo ntpdate pool.ntp.org
+sudo timedatectl set-timezone Asia/Kolkata
 
 # Enable the sysctl settings
 echo "[Task 4] Add sysctl settings"
