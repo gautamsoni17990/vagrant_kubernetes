@@ -38,13 +38,13 @@ In the given file kube-flannel.yml, i have changed the interface details so that
 2) Open the ```git bash``` in the software and run the below command.
 
 ```
-> cd C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine
+> cd C:\Users\gautam\CloudDrive\vagrant_machine\Office Machine
 > vagrant up
 ```
     
 3) Suppose all machines has been installed & now its time to verify all the machines one by one.
 ```
-C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine>vagrant status
+C:\Users\gautam\CloudDrive\vagrant_machine\Office Machine>vagrant status
 Current machine states:
 
 kmaster                   running (virtualbox)
@@ -55,10 +55,10 @@ This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 VM, run `vagrant status NAME`.
 
-C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine>
+C:\Users\gautam\CloudDrive\vagrant_machine\Office Machine>
 ```
 ```
-C:\Users\BVGV9953\CloudDrive\vagrant_machine\Office Machine>vagrant ssh kmaster
+C:\Users\gautam\CloudDrive\vagrant_machine\Office Machine>vagrant ssh kmaster
 Last login: Fri Jan 24 08:23:08 2020 from 10.0.2.2
 [vagrant@kmaster ~]$
 ```
